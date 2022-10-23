@@ -1,4 +1,4 @@
-package com.farris.beutifulcalendar
+package com.farris.beauty.time.sdjdi
 
 import org.junit.Test
 
