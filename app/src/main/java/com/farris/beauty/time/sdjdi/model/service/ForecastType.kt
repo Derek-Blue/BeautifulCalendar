@@ -9,34 +9,34 @@ sealed class ForecastType(
 
     sealed class TownShip(path: String, description: String) : ForecastType(path, description) {
 
-        sealed class TwoDays(
+        sealed class ThreeDays(
             val name: String,
             override val path: String,
             override val description: String
         ) : TownShip(path, description) {
 
-            object Yilan : TwoDays("宜蘭縣", "F-D0047-001", "鄉鎮天氣預報-宜蘭縣未來2天天氣預報")
-            object Taoyuan : TwoDays("桃園市", "F-D0047-005", "鄉鎮天氣預報-桃園市未來2天天氣預報")
-            object HsinChu : TwoDays("新竹縣", "F-D0047-009", "鄉鎮天氣預報-新竹縣未來2天天氣預報")
-            object Miaoli : TwoDays("苗栗縣", "F-D0047-013", "鄉鎮天氣預報-苗栗縣未來2天天氣預報")
-            object Changhua : TwoDays("彰化縣", "F-D0047-017", "鄉鎮天氣預報-彰化縣未來2天天氣預報")
-            object Nantou : TwoDays("南投縣", "F-D0047-021", "鄉鎮天氣預報-南投縣未來2天天氣預報")
-            object Yunlin : TwoDays("雲林縣", "F-D0047-025", "鄉鎮天氣預報-雲林縣未來2天天氣預報")
-            object Chiayi : TwoDays("嘉義縣", "F-D0047-029", "鄉鎮天氣預報-嘉義縣未來2天天氣預報")
-            object Pingtung : TwoDays("屏東縣", "F-D0047-033", "鄉鎮天氣預報-屏東縣未來2天天氣預報")
-            object Taitung : TwoDays("臺東縣", "F-D0047-037", "鄉鎮天氣預報-臺東縣未來2天天氣預報")
-            object Hualien : TwoDays("花蓮縣", "F-D0047-041", "鄉鎮天氣預報-花蓮縣未來2天天氣預報")
-            object Penghu : TwoDays("澎湖縣", "F-D0047-045", "鄉鎮天氣預報-澎湖縣未來2天天氣預報")
-            object Keelung : TwoDays("基隆市", "F-D0047-049", "鄉鎮天氣預報-基隆市未來2天天氣預報")
-            object HsinChuCity : TwoDays("新竹市", "F-D0047-053", "鄉鎮天氣預報-新竹市未來2天天氣預報")
-            object ChiayiCity : TwoDays("嘉義市", "F-D0047-057", "鄉鎮天氣預報-嘉義市未來2天天氣預報")
-            object Taipei : TwoDays("臺北市", "F-D0047-061", "鄉鎮天氣預報-臺北市未來2天天氣預報")
-            object Kaohsiung : TwoDays("高雄市", "F-D0047-065", "鄉鎮天氣預報-高雄市未來2天天氣預報")
-            object NewTaipei : TwoDays("新北市", "F-D0047-069", "鄉鎮天氣預報-新北市未來2天天氣預報")
-            object Taichung : TwoDays("臺中市", "F-D0047-073", "鄉鎮天氣預報-臺中市未來2天天氣預報")
-            object Tainan : TwoDays("臺南市", "F-D0047-077", "鄉鎮天氣預報-臺南市未來2天天氣預報")
-            object Lianjiang : TwoDays("連江縣", "F-D0047-081", "鄉鎮天氣預報-連江縣未來2天天氣預報")
-            object Kinmen : TwoDays("金門縣", "F-D0047-085", "鄉鎮天氣預報-金門縣未來2天天氣預報")
+            object Yilan : ThreeDays("宜蘭縣", "F-D0047-001", "鄉鎮天氣預報-宜蘭縣未來2天天氣預報")
+            object Taoyuan : ThreeDays("桃園市", "F-D0047-005", "鄉鎮天氣預報-桃園市未來2天天氣預報")
+            object HsinChu : ThreeDays("新竹縣", "F-D0047-009", "鄉鎮天氣預報-新竹縣未來2天天氣預報")
+            object Miaoli : ThreeDays("苗栗縣", "F-D0047-013", "鄉鎮天氣預報-苗栗縣未來2天天氣預報")
+            object Changhua : ThreeDays("彰化縣", "F-D0047-017", "鄉鎮天氣預報-彰化縣未來2天天氣預報")
+            object Nantou : ThreeDays("南投縣", "F-D0047-021", "鄉鎮天氣預報-南投縣未來2天天氣預報")
+            object Yunlin : ThreeDays("雲林縣", "F-D0047-025", "鄉鎮天氣預報-雲林縣未來2天天氣預報")
+            object Chiayi : ThreeDays("嘉義縣", "F-D0047-029", "鄉鎮天氣預報-嘉義縣未來2天天氣預報")
+            object Pingtung : ThreeDays("屏東縣", "F-D0047-033", "鄉鎮天氣預報-屏東縣未來2天天氣預報")
+            object Taitung : ThreeDays("臺東縣", "F-D0047-037", "鄉鎮天氣預報-臺東縣未來2天天氣預報")
+            object Hualien : ThreeDays("花蓮縣", "F-D0047-041", "鄉鎮天氣預報-花蓮縣未來2天天氣預報")
+            object Penghu : ThreeDays("澎湖縣", "F-D0047-045", "鄉鎮天氣預報-澎湖縣未來2天天氣預報")
+            object Keelung : ThreeDays("基隆市", "F-D0047-049", "鄉鎮天氣預報-基隆市未來2天天氣預報")
+            object HsinChuCity : ThreeDays("新竹市", "F-D0047-053", "鄉鎮天氣預報-新竹市未來2天天氣預報")
+            object ChiayiCity : ThreeDays("嘉義市", "F-D0047-057", "鄉鎮天氣預報-嘉義市未來2天天氣預報")
+            object Taipei : ThreeDays("臺北市", "F-D0047-061", "鄉鎮天氣預報-臺北市未來2天天氣預報")
+            object Kaohsiung : ThreeDays("高雄市", "F-D0047-065", "鄉鎮天氣預報-高雄市未來2天天氣預報")
+            object NewTaipei : ThreeDays("新北市", "F-D0047-069", "鄉鎮天氣預報-新北市未來2天天氣預報")
+            object Taichung : ThreeDays("臺中市", "F-D0047-073", "鄉鎮天氣預報-臺中市未來2天天氣預報")
+            object Tainan : ThreeDays("臺南市", "F-D0047-077", "鄉鎮天氣預報-臺南市未來2天天氣預報")
+            object Lianjiang : ThreeDays("連江縣", "F-D0047-081", "鄉鎮天氣預報-連江縣未來2天天氣預報")
+            object Kinmen : ThreeDays("金門縣", "F-D0047-085", "鄉鎮天氣預報-金門縣未來2天天氣預報")
         }
 
         sealed class OneWeek(
@@ -83,30 +83,30 @@ sealed class ForecastType(
     object Tidal: ForecastType("F-A0021-001", "潮汐預報-未來 1 個月潮汐預報")
 
     companion object {
-        val twoDaysForecast = listOf(
-            TownShip.TwoDays.Yilan,
-            TownShip.TwoDays.Yilan,
-            TownShip.TwoDays.Taoyuan,
-            TownShip.TwoDays.HsinChu,
-            TownShip.TwoDays.Miaoli,
-            TownShip.TwoDays.Changhua,
-            TownShip.TwoDays.Nantou,
-            TownShip.TwoDays.Yunlin,
-            TownShip.TwoDays.Chiayi,
-            TownShip.TwoDays.Pingtung,
-            TownShip.TwoDays.Taitung,
-            TownShip.TwoDays.Hualien,
-            TownShip.TwoDays.Penghu,
-            TownShip.TwoDays.Keelung,
-            TownShip.TwoDays.HsinChuCity,
-            TownShip.TwoDays.ChiayiCity,
-            TownShip.TwoDays.Taipei,
-            TownShip.TwoDays.Kaohsiung,
-            TownShip.TwoDays.NewTaipei,
-            TownShip.TwoDays.Taichung,
-            TownShip.TwoDays.Tainan,
-            TownShip.TwoDays.Lianjiang,
-            TownShip.TwoDays.Kinmen
+        val threeDaysForecasts = listOf(
+            TownShip.ThreeDays.Yilan,
+            TownShip.ThreeDays.Yilan,
+            TownShip.ThreeDays.Taoyuan,
+            TownShip.ThreeDays.HsinChu,
+            TownShip.ThreeDays.Miaoli,
+            TownShip.ThreeDays.Changhua,
+            TownShip.ThreeDays.Nantou,
+            TownShip.ThreeDays.Yunlin,
+            TownShip.ThreeDays.Chiayi,
+            TownShip.ThreeDays.Pingtung,
+            TownShip.ThreeDays.Taitung,
+            TownShip.ThreeDays.Hualien,
+            TownShip.ThreeDays.Penghu,
+            TownShip.ThreeDays.Keelung,
+            TownShip.ThreeDays.HsinChuCity,
+            TownShip.ThreeDays.ChiayiCity,
+            TownShip.ThreeDays.Taipei,
+            TownShip.ThreeDays.Kaohsiung,
+            TownShip.ThreeDays.NewTaipei,
+            TownShip.ThreeDays.Taichung,
+            TownShip.ThreeDays.Tainan,
+            TownShip.ThreeDays.Lianjiang,
+            TownShip.ThreeDays.Kinmen
         )
         val oneWeekForecast = listOf(
             TownShip.OneWeek.Yilan,
@@ -134,8 +134,8 @@ sealed class ForecastType(
             TownShip.OneWeek.Kinmen
         )
 
-        fun twoDaysForecastFromName(name: String): TownShip.TwoDays {
-            return twoDaysForecast.find { it.name == name } ?: TownShip.TwoDays.Taoyuan
+        fun threeDaysForecastFromName(name: String): TownShip.ThreeDays {
+            return threeDaysForecasts.find { it.name == name } ?: TownShip.ThreeDays.Taoyuan
         }
 
         fun oneWeekForecastFromName(name: String): TownShip.OneWeek {
