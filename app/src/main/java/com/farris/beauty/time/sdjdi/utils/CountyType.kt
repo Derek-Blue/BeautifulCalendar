@@ -1,6 +1,6 @@
 package com.farris.beauty.time.sdjdi.utils
 
-enum class TownShipType(val _name: String) {
+enum class CountyType(val _name: String) {
     Yilan("宜蘭縣"),
     Taoyuan("桃園市"),
     HsinChu("新竹縣"),

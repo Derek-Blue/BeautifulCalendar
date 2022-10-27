@@ -14,7 +14,7 @@ interface ForecastApiService {
 
     @GET("/v1/rest/datastore/{path}")
     suspend fun thirtySixHours(
-        @Path("path") path: String,
+        @Path("path") path: String = ForecastType.ThirtySixHours.path,
         @Header("Authorization") auth: String = CWB_TOKEN
     ): Response<ThirtySixForecastRootResponse>
 
@@ -26,7 +26,7 @@ interface ForecastApiService {
 
     @GET("/v1/rest/datastore/{path}")
     suspend fun chooseLocation(
-        @Path("path") path: String,
+        @Path("path") path: String = ForecastType.ChooseLocation.path,
         @Query("locationId") locationId: String,
         @Header("Authorization") auth: String = CWB_TOKEN
     ): Response<ForecastRootResponse>
