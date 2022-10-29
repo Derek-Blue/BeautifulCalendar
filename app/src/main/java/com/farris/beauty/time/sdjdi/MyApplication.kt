@@ -1,7 +1,7 @@
 package com.farris.beauty.time.sdjdi
 
 import android.app.Application
-import com.farris.beauty.time.sdjdi.model.service.RetrofitManager
+import com.farris.beauty.time.sdjdi.module.service.RetrofitManager
 
 class MyApplication: Application() {
 
