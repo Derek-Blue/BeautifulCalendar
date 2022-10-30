@@ -2,7 +2,6 @@ package com.farris.beauty.time.sdjdi.screen
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.LinearLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -43,7 +42,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
 
         binding.chooseTextView.setOnClickListener {
-            val names = WeatherElementType.values().map {
+            val names = WeatherElementType.threeDaysElements().map {
                 it.elementName
             }.toTypedArray()
             AlertDialog.Builder(this)

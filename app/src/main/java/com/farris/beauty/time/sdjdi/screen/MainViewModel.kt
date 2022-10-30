@@ -2,8 +2,8 @@ package com.farris.beauty.time.sdjdi.screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.farris.beauty.time.sdjdi.module.usecase.forecast.ForecastUseCase
-import com.farris.beauty.time.sdjdi.module.usecase.forecast.ForecastUseCaseImpl
+import com.farris.beauty.time.sdjdi.module.usecase.forecast.singleelement.SingleElementForecastUseCase
+import com.farris.beauty.time.sdjdi.module.usecase.forecast.singleelement.SingleElementForecastUseCaseImpl
 import com.farris.beauty.time.sdjdi.screen.sample.SampleItem
 import com.farris.beauty.time.sdjdi.type.CountyType
 import com.farris.beauty.time.sdjdi.type.CycleType
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-    private val useCase: ForecastUseCase = ForecastUseCaseImpl()
+    private val useCase: SingleElementForecastUseCase = SingleElementForecastUseCaseImpl()
 ) : ViewModel() {
 
     private val _viewState = MutableStateFlow(MainViewState())
@@ -32,32 +32,28 @@ class MainViewModel(
                     currentState.copy(isProgress = true)
                 }
             }.map { element ->
-                val data = useCase(
-                    CountyType.Yilan,
-                    CycleType.Week,
-                    listOf(element)
-                ).getOrThrow().map { entry ->
-                    val townShip = entry.key
-                    entry.value.map { elementEntry ->
-                        val elementName = elementEntry.key.elementName
-                        elementEntry.value.map { time ->
+                val data = useCase(CountyType.Taoyuan, CycleType.TreeDays, element).getOrThrow()
+                    .map { entry ->
+                        entry.value.map { elementTime ->
                             SampleItem(
-                                townShipName = townShip,
-                                element = elementName,
-                                start = SAMPLE_FORMAT.format(time.startTime.time),
-                                end = time.endTime?.let {
+                                townShipName = elementTime.townShip,
+                                element = elementTime.elementName,
+                                start = SAMPLE_FORMAT.format(elementTime.startTime.time),
+                                end = elementTime.endTime?.let {
                                     SAMPLE_FORMAT.format(it.time)
                                 } ?: "-",
-                                valueText = time.weatherElements.toString()
+                                valueText = elementTime.weatherElements.toString()
                             )
                         }
                     }.flatten()
-                }.flatten()
 
                 currentState.copy(items = data)
             }
                 .catch {
                     _error.emit(it.message ?: "unknown error")
+                    _viewState.update {
+                        currentState.copy(isProgress = false)
+                    }
                 }
                 .collectLatest { newState ->
                     _viewState.update {

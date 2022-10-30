@@ -22,7 +22,8 @@ class ThreeDaysForecastRepositoryImpl(
 ) : ForecastRepository {
 
     companion object {
-        private const val CACHE_HOLDER_TIME = ONE_SECOND_MILLISECONDS * ONE_MINUTE_SECONDS * ONE_HOUR_MINUTES * 3
+        private const val CACHE_HOLDER_TIME =
+            ONE_SECOND_MILLISECONDS * ONE_MINUTE_SECONDS * ONE_HOUR_MINUTES * 3
     }
 
     private val dao = dataBase.forecastDao()
@@ -71,30 +72,27 @@ class ThreeDaysForecastRepositoryImpl(
                 county.location?.map { townShip ->
                     townShip.weatherElements?.map { weather ->
                         weather.weatherElementTime?.mapIndexed { index, time ->
-                            time.elementValue?.map {
-                                val startTime =
-                                    (time.startTime ?: time.dataTime)?.let { dateStr ->
-                                        dateStr.formatDate(FORECAST_FORMAT)?.timeInMillis
-                                    } ?: 0
-                                val endTime =
-                                    time.endTime?.formatDate(FORECAST_FORMAT)?.timeInMillis ?: 0
-                                val elementName = weather.elementName ?: ""
-                                RepositoryLocationForecast(
-                                    id = "${type.path}_${townShip.geocode}_${elementName}_$index",
-                                    path = type.path,
-                                    county = county.locationsName ?: "",
-                                    township = townShip.locationName ?: "",
-                                    geoCode = townShip.geocode ?: "",
-                                    lat = townShip.lat ?: "",
-                                    lon = townShip.lon ?: "",
-                                    elementName = elementName,
-                                    startTime = startTime,
-                                    endTime = endTime,
-                                    elementValue = it.value ?: "",
-                                    elementMeasures = it.measures ?: ""
-                                )
-                            } ?: emptyList()
-                        }?.flatten() ?: emptyList()
+                            val startTime =
+                                (time.startTime ?: time.dataTime)?.let { dateStr ->
+                                    dateStr.formatDate(FORECAST_FORMAT)?.timeInMillis
+                                } ?: 0
+                            val endTime =
+                                time.endTime?.formatDate(FORECAST_FORMAT)?.timeInMillis ?: 0
+                            val elementName = weather.elementName.orEmpty()
+                            RepositoryLocationForecast(
+                                id = "${type.path}_${townShip.geocode}_${elementName}_$index",
+                                path = type.path,
+                                county = county.locationsName.orEmpty(),
+                                township = townShip.locationName.orEmpty(),
+                                geoCode = townShip.geocode.orEmpty(),
+                                lat = townShip.lat.orEmpty(),
+                                lon = townShip.lon.orEmpty(),
+                                elementName = elementName,
+                                startTime = startTime,
+                                endTime = endTime,
+                                elementValue = time.elementValue.toString(),
+                            )
+                        } ?: emptyList()
                     }?.flatten() ?: emptyList()
                 }?.flatten() ?: emptyList()
             }?.flatten() ?: emptyList()

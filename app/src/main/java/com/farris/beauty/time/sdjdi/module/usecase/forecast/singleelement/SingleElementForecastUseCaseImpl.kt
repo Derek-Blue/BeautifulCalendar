@@ -3,6 +3,7 @@ package com.farris.beauty.time.sdjdi.module.usecase.forecast.singleelement
 import com.farris.beauty.time.sdjdi.module.repository.forecast.ForecastRepository
 import com.farris.beauty.time.sdjdi.module.repository.forecast.OneWeekForecastRepositoryImpl
 import com.farris.beauty.time.sdjdi.module.repository.forecast.ThreeDaysForecastRepositoryImpl
+import com.farris.beauty.time.sdjdi.module.service.RetrofitManager
 import com.farris.beauty.time.sdjdi.module.usecase.forecast.UseCaseWeatherElement
 import com.farris.beauty.time.sdjdi.module.usecase.forecast.UseCaseWeatherTime
 import com.farris.beauty.time.sdjdi.type.CountyType
@@ -11,12 +12,14 @@ import com.farris.beauty.time.sdjdi.type.WeatherElementType
 import com.farris.beauty.time.sdjdi.utils.getNstCalendar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.lang.IllegalArgumentException
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.json.Json
 
 class SingleElementForecastUseCaseImpl(
     private val threeDaysRepository: ForecastRepository = ThreeDaysForecastRepositoryImpl(),
-    private val oneWeekRepository: ForecastRepository = OneWeekForecastRepositoryImpl()
-): SingleElementForecastUseCase {
+    private val oneWeekRepository: ForecastRepository = OneWeekForecastRepositoryImpl(),
+    private val json: Json = RetrofitManager.getBaseJson()
+) : SingleElementForecastUseCase {
 
     override suspend fun invoke(
         countyType: CountyType,
@@ -28,7 +31,7 @@ class SingleElementForecastUseCaseImpl(
             source.getData(countyType, listOf(weatherElementType))
                 .mapCatching { repository ->
                     repository.groupBy({
-                        "${it.township}_${it.elementName}_${it.startTime}"
+                        it.township
                     }, {
                         val startTime = if (it.startTime > 0) {
                             getNstCalendar(it.startTime)
@@ -47,20 +50,23 @@ class SingleElementForecastUseCaseImpl(
                             it.elementName,
                             startTime,
                             endTime,
-                            listOf(
-                                UseCaseWeatherElement(it.elementValue, it.elementMeasures)
+                            json.decodeFromString(
+                                ListSerializer(UseCaseWeatherElement.serializer()),
+                                it.elementValue
                             )
                         )
-                    }).mapNotNull { entry ->
-                        if (entry.value.isEmpty()) return@mapNotNull null
-                        UseCaseWeatherTime(
-                            entry.value.first().townShip,
-                            entry.value.first().elementName,
-                            entry.value.first().startTime,
-                            entry.value.first().endTime,
-                            entry.value.map { it.weatherElements }.flatten(),
-                        )
-                    }.groupBy { it.townShip }
+                    })
+
+//                        .mapNotNull { entry ->
+//                        if (entry.value.isEmpty()) return@mapNotNull null
+//                        UseCaseWeatherTime(
+//                            entry.value.first().townShip,
+//                            entry.value.first().elementName,
+//                            entry.value.first().startTime,
+//                            entry.value.first().endTime,
+//                            entry.value.map { it.weatherElements }.flatten(),
+//                        )
+//                    }.groupBy { it.townShip }
                 }
         }
     }
