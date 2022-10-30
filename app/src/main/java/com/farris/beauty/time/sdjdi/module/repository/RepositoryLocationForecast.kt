@@ -16,5 +16,4 @@ data class RepositoryLocationForecast(
     val startTime: Long,
     val endTime: Long,
     val elementValue: String,
-    val elementMeasures: String,
 )

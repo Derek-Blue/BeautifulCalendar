@@ -73,7 +73,6 @@ class OneWeekForecastRepositoryImpl(
                 county.location?.map { townShip ->
                     townShip.weatherElements?.map { weather ->
                         weather.weatherElementTime?.mapIndexed { index, time ->
-                            time.elementValue?.map {
                                 val startTime =
                                     (time.startTime ?: time.dataTime)?.let { dateStr ->
                                         dateStr.formatDate(FORECAST_FORMAT)?.timeInMillis
@@ -92,11 +91,9 @@ class OneWeekForecastRepositoryImpl(
                                     elementName = elementName,
                                     startTime = startTime,
                                     endTime = endTime,
-                                    elementValue = it.value ?: "",
-                                    elementMeasures = it.measures ?: ""
+                                    elementValue = time.elementValue.toString(),
                                 )
-                            } ?: emptyList()
-                        }?.flatten() ?: emptyList()
+                        } ?: emptyList()
                     }?.flatten() ?: emptyList()
                 }?.flatten() ?: emptyList()
             }?.flatten() ?: emptyList()
