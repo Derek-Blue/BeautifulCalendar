@@ -45,8 +45,8 @@ sealed class ForecastApiType(
             override val description: String
         ) : TownShip(path, description) {
 
-            object Yilan : OneWeek("宜蘭", "F-D0047-003", "鄉鎮天氣預報-宜蘭縣未來1週天氣預報")
-            object Taoyuan : OneWeek("桃園", "F-D0047-007", "鄉鎮天氣預報-桃園市未來1週天氣預報")
+            object Yilan : OneWeek("宜蘭縣", "F-D0047-003", "鄉鎮天氣預報-宜蘭縣未來1週天氣預報")
+            object Taoyuan : OneWeek("桃園市", "F-D0047-007", "鄉鎮天氣預報-桃園市未來1週天氣預報")
             object HsinChu : OneWeek("新竹縣", "F-D0047-011", "鄉鎮天氣預報-新竹縣未來1週天氣預報")
             object Miaoli : OneWeek("苗栗縣", "F-D0047-015", "鄉鎮天氣預報-苗栗縣未來1週天氣預報")
             object Changhua : OneWeek("彰化縣", "F-D0047-019", "鄉鎮天氣預報-彰化縣未來1週天氣預報")

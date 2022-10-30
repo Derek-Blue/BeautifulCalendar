@@ -1,4 +1,4 @@
-package com.farris.beauty.time.sdjdi.module.usecase
+package com.farris.beauty.time.sdjdi.module.usecase.forecast
 
 import com.farris.beauty.time.sdjdi.module.repository.forecast.ForecastRepository
 import com.farris.beauty.time.sdjdi.module.repository.forecast.OneWeekForecastRepositoryImpl
@@ -20,15 +20,16 @@ class ForecastUseCaseImpl(
         countyType: CountyType,
         cycleType: CycleType,
         weatherElementType: List<WeatherElementType>
-    ): Result<Map<WeatherElementType, List<UseCaseWeatherTime>>> {
+    ): Result<Map<String, Map<WeatherElementType, List<UseCaseWeatherTime>>>> {
         return withContext(Dispatchers.IO) {
             val source = fromWhere(cycleType)
             source.getData(countyType, weatherElementType)
                 .mapCatching { repository ->
-                    val mediator = repository.groupBy ({
-                        "${it.elementName}_${it.startTime}"
+                    repository.groupBy({
+                        "${it.township}_${it.elementName}_${it.startTime}"
                     }, {
                         Mediator(
+                            it.township,
                             it.elementName,
                             it.startTime,
                             it.endTime,
@@ -39,33 +40,34 @@ class ForecastUseCaseImpl(
                     }).mapNotNull { entry ->
                         if (entry.value.isEmpty()) return@mapNotNull null
                         Mediator(
+                            entry.value.first().townShip,
                             entry.value.first().elementName,
                             entry.value.first().startTime,
                             entry.value.first().endTime,
                             entry.value.map { it.weatherElements }.flatten(),
                         )
+                    }.groupBy { it.townShip }.mapValues { entry ->
+                        entry.value.groupBy({
+                            WeatherElementType.fromName(it.elementName)
+                                ?: throw IllegalArgumentException("Use Case not found WeatherElementType")
+                        }, {
+                            val startTime = if (it.startTime > 0) {
+                                getNstCalendar(it.startTime)
+                            } else {
+                                throw IllegalArgumentException("Use Case get startTime is zero")
+                            }
+
+                            val endTime = if (it.endTime > 0) {
+                                getNstCalendar(it.endTime)
+                            } else {
+                                null
+                            }
+
+                            UseCaseWeatherTime(
+                                it.townShip, it.elementName, startTime, endTime, it.weatherElements
+                            )
+                        })
                     }
-
-                    mediator.groupBy({
-                        WeatherElementType.fromName(it.elementName)
-                            ?: throw IllegalArgumentException("Use Case not found WeatherElementType")
-                    }, {
-                        val startTime = if (it.startTime > 0) {
-                            getNstCalendar(it.startTime)
-                        } else {
-                            throw IllegalArgumentException("Use Case get startTime is zero")
-                        }
-
-                        val endTime = if (it.endTime > 0) {
-                            getNstCalendar(it.endTime)
-                        } else {
-                            null
-                        }
-
-                        UseCaseWeatherTime(
-                            startTime, endTime, it.weatherElements
-                        )
-                    })
                 }
         }
     }
@@ -78,6 +80,7 @@ class ForecastUseCaseImpl(
     }
 
     private data class Mediator(
+        val townShip: String,
         val elementName: String,
         val startTime: Long,
         val endTime: Long,

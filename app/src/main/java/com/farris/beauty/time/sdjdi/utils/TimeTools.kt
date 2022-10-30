@@ -14,8 +14,10 @@ const val ONE_DAY_HOURS = 24L
 const val ONE_WEEK_DAYS = 7L
 
 const val FORECAST_SERVICE_TIME_RULE = "yyyy-MM-dd hh:mm:ss"
+const val SAMPLE_TIME_RULE = "MM-dd HH:mm"
 
 val FORECAST_FORMAT by lazy { SimpleDateFormat(FORECAST_SERVICE_TIME_RULE, Locale.TAIWAN) }
+val SAMPLE_FORMAT by lazy { SimpleDateFormat(SAMPLE_TIME_RULE, Locale.TAIWAN) }
 
 fun getNstCalendar(): Calendar {
     return Calendar.getInstance(TWTimeZone, Locale.TAIWAN)

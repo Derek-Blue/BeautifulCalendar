@@ -8,6 +8,7 @@ import com.farris.beauty.time.sdjdi.module.service.data.requireBody
 import com.farris.beauty.time.sdjdi.module.service.response.ForecastRootResponse
 import com.farris.beauty.time.sdjdi.module.service.response.thirtysixhours.ThirtySixForecastRootResponse
 import com.farris.beauty.time.sdjdi.module.service.response.tidal.TidalRootResponse
+import com.farris.beauty.time.sdjdi.type.WeatherElementType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
@@ -27,10 +28,18 @@ class ForecastApiWebImpl(
         }
     }
 
-    override suspend fun searchLocation(forecastApiType: ForecastApiType): Result<ForecastRootResponse> {
+    override suspend fun searchLocation(
+        forecastApiType: ForecastApiType,
+        elements: List<WeatherElementType>
+    ): Result<ForecastRootResponse> {
         return withContext(defaultDispatcher) {
             runCatching {
-                service.location(forecastApiType.path)
+                val elementName = if (elements.isNotEmpty()) {
+                    elements.joinToString { it.elementName }
+                } else {
+                    null
+                }
+                service.location(path = forecastApiType.path, elementName = elementName)
                     .checkIsSuccessful()
                     .requireBody()
             }

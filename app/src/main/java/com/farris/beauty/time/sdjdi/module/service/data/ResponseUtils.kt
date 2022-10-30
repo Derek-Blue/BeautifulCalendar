@@ -5,7 +5,6 @@ import kotlinx.serialization.SerializationException
 import retrofit2.HttpException
 import retrofit2.Response
 
-@Keep
 @Throws(
     SerializationException::class,
     IllegalArgumentException::class
