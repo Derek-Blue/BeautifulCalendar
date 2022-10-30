@@ -15,26 +15,27 @@ interface ForecastApiService {
 
     @GET("/api/v1/rest/datastore/{path}")
     suspend fun thirtySixHours(
+        @Header("Authorization") auth: String = CWB_TOKEN,
         @Path("path") path: String = ForecastApiType.ThirtySixHours.path,
-        @Header("Authorization") auth: String = CWB_TOKEN
     ): Response<ThirtySixForecastRootResponse>
 
     @GET("/api/v1/rest/datastore/{path}")
     suspend fun location(
+        @Header("Authorization") auth: String = CWB_TOKEN,
         @Path("path") path: String,
-        @Header("Authorization") auth: String = CWB_TOKEN
+        @Query("elementName")elementName: String? = null,
     ): Response<ForecastRootResponse>
 
     @GET("/api/v1/rest/datastore/{path}")
     suspend fun chooseLocation(
+        @Header("Authorization") auth: String = CWB_TOKEN,
         @Path("path") path: String = ForecastApiType.ChooseLocation.path,
         @Query("locationId") locationId: String,
-        @Header("Authorization") auth: String = CWB_TOKEN
     ): Response<ForecastRootResponse>
 
     @GET("/api/v1/rest/datastore/{path}")
     suspend fun tidal(
+        @Header("Authorization") auth: String = CWB_TOKEN,
         @Path("path") path: String = ForecastApiType.Tidal.path,
-        @Header("Authorization") auth: String = CWB_TOKEN
     ): Response<TidalRootResponse>
 }

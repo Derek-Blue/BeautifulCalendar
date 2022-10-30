@@ -4,10 +4,10 @@ import com.farris.beauty.time.sdjdi.module.database.ForecastDataBase
 import com.farris.beauty.time.sdjdi.module.repository.RepositoryLocationForecast
 import com.farris.beauty.time.sdjdi.module.repository.cachetime.ForecastCacheTimeRepository
 import com.farris.beauty.time.sdjdi.module.repository.cachetime.ForecastCacheTimeRepositoryImpl
-import com.farris.beauty.time.sdjdi.type.ForecastApiType
 import com.farris.beauty.time.sdjdi.module.web.ForecastApiWeb
 import com.farris.beauty.time.sdjdi.module.web.ServiceWebProvider
 import com.farris.beauty.time.sdjdi.type.CountyType
+import com.farris.beauty.time.sdjdi.type.ForecastApiType
 import com.farris.beauty.time.sdjdi.type.WeatherElementType
 import com.farris.beauty.time.sdjdi.utils.*
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +22,8 @@ class OneWeekForecastRepositoryImpl(
 ) : ForecastRepository {
 
     companion object {
-        private const val CACHE_HOLDER_TIME = ONE_SECOND_MILLISECONDS * ONE_MINUTE_SECONDS * ONE_HOUR_MINUTES * 6
+        private const val CACHE_HOLDER_TIME =
+            ONE_SECOND_MILLISECONDS * ONE_MINUTE_SECONDS * ONE_HOUR_MINUTES * 6
     }
 
     private val dao = dataBase.forecastDao()
@@ -33,33 +34,41 @@ class OneWeekForecastRepositoryImpl(
     ): Result<List<RepositoryLocationForecast>> {
         return withContext(dispatcher) {
             val type = ForecastApiType.oneWeekForecastFromName(countyType._name)
-            val cache = getDataFromDataBase(type.path, getTypes)
-            val lastUpdateTime = cacheTimeRepository.getLastTime(type.path)
-            val currentTime = getNstCalendar().timeInMillis
-            val isExpire = (currentTime - lastUpdateTime) > CACHE_HOLDER_TIME
-            if (cache.isEmpty() || isExpire) {
+            val cache = getTypes.map {
+                getDataFromDataBase(type.path, it)
+            }
+
+            if (isExpire(type) || cache.any { it.isEmpty() } ) {
                 getDataFromService(type, getTypes)
             } else {
-                Result.success(cache)
+                Result.success(cache.flatten())
             }
+        }
+    }
+
+    private suspend fun isExpire(type: ForecastApiType.TownShip.OneWeek): Boolean {
+        val lastUpdateTime = cacheTimeRepository.getLastTime(type.path)
+        val currentTime = getNstCalendar().timeInMillis
+        return if ((currentTime - lastUpdateTime) > CACHE_HOLDER_TIME) {
+            dao.delete(type.path)
+            true
+        } else {
+            false
         }
     }
 
     private fun getDataFromDataBase(
         countyPath: String,
-        getTypes: List<WeatherElementType>
+        getType: WeatherElementType
     ): List<RepositoryLocationForecast> {
-        return getTypes.map {
-            dao.select(countyPath, it.elementName)
-        }.flatten()
+        return dao.select(countyPath, listOf(getType.elementName))
     }
 
     private suspend fun getDataFromService(
         type: ForecastApiType.TownShip.OneWeek,
         getTypes: List<WeatherElementType>
     ): Result<List<RepositoryLocationForecast>> {
-        dao.delete(type.path)
-        return service.searchLocation(type).mapCatching { root ->
+        return service.searchLocation(type, getTypes).mapCatching { root ->
             root.records?.locations?.map { county ->
                 county.location?.map { townShip ->
                     townShip.weatherElements?.map { weather ->
@@ -73,7 +82,7 @@ class OneWeekForecastRepositoryImpl(
                                     time.endTime?.formatDate(FORECAST_FORMAT)?.timeInMillis ?: 0
                                 val elementName = weather.elementName ?: ""
                                 RepositoryLocationForecast(
-                                    id = "${type.path}_${elementName}_$index",
+                                    id = "${type.path}_${townShip.geocode}_${elementName}_$index",
                                     path = type.path,
                                     county = county.locationsName ?: "",
                                     township = townShip.locationName ?: "",
