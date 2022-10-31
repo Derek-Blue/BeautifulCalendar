@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1064775001811",
+    "project_id": "weatherforecast-v1",
+    "storage_bucket": "weatherforecast-v1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1064775001811:android:59a524d3e4df9232c21626",
+        "android_client_info": {
+          "package_name": "com.farris.beauty.time.sdjdi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1064775001811-0r4chvrf5n2pp4h5ofdru97bj061qlt6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.farris.beauty.time.sdjdi",
+            "certificate_hash": "acba961a0eead5e73f1eb23f0c67e46facd1a47c"
+          }
+        },
+        {
+          "client_id": "1064775001811-u0kk1bmivqcpnfrb3i4t4i7mfnqb88ru.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAT5YqbZRbaIS2Q0tgGifEzmoyuBL0p_zA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1064775001811-u0kk1bmivqcpnfrb3i4t4i7mfnqb88ru.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
