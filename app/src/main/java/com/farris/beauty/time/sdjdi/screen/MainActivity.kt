@@ -1,5 +1,7 @@
 package com.farris.beauty.time.sdjdi.screen
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.LinearLayout
@@ -20,6 +22,12 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
+
+    companion object {
+        fun createIntent(context: Context): Intent {
+            return Intent(context, MainActivity::class.java)
+        }
+    }
 
     private lateinit var binding: ActivityMainBinding
 

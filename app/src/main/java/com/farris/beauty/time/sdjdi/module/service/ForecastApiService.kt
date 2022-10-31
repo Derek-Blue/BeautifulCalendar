@@ -1,6 +1,5 @@
 package com.farris.beauty.time.sdjdi.module.service
 
-import com.farris.beauty.time.sdjdi.module.service.data.CWB_TOKEN
 import com.farris.beauty.time.sdjdi.module.service.response.ForecastRootResponse
 import com.farris.beauty.time.sdjdi.module.service.response.thirtysixhours.ThirtySixForecastRootResponse
 import com.farris.beauty.time.sdjdi.module.service.response.tidal.TidalRootResponse
@@ -15,27 +14,27 @@ interface ForecastApiService {
 
     @GET("/api/v1/rest/datastore/{path}")
     suspend fun thirtySixHours(
-        @Header("Authorization") auth: String = CWB_TOKEN,
+        @Header("Authorization") auth: String,
         @Path("path") path: String = ForecastApiType.ThirtySixHours.path,
     ): Response<ThirtySixForecastRootResponse>
 
     @GET("/api/v1/rest/datastore/{path}")
     suspend fun location(
-        @Header("Authorization") auth: String = CWB_TOKEN,
+        @Header("Authorization") auth: String,
         @Path("path") path: String,
         @Query("elementName")elementName: String? = null,
     ): Response<ForecastRootResponse>
 
     @GET("/api/v1/rest/datastore/{path}")
     suspend fun chooseLocation(
-        @Header("Authorization") auth: String = CWB_TOKEN,
+        @Header("Authorization") auth: String,
         @Path("path") path: String = ForecastApiType.ChooseLocation.path,
         @Query("locationId") locationId: String,
     ): Response<ForecastRootResponse>
 
     @GET("/api/v1/rest/datastore/{path}")
     suspend fun tidal(
-        @Header("Authorization") auth: String = CWB_TOKEN,
+        @Header("Authorization") auth: String,
         @Path("path") path: String = ForecastApiType.Tidal.path,
     ): Response<TidalRootResponse>
 }

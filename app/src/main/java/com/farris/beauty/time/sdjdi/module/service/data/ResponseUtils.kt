@@ -1,6 +1,5 @@
 package com.farris.beauty.time.sdjdi.module.service.data
 
-import androidx.annotation.Keep
 import kotlinx.serialization.SerializationException
 import retrofit2.HttpException
 import retrofit2.Response
